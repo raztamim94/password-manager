@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <LinearLayout
+        android:id="@+id/texts"
+        android:layout_width="match_parent"
+        android:layout_height="693dp"
+        android:orientation="vertical"
+        android:paddingTop="25dp">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="start"
+            android:hint="Username"
+            android:inputType="text"></EditText>
+
+        <EditText
+            android:id="@+id/app"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="Website/App"
+            android:inputType="text"></EditText>
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Password"
+            android:textSize="18sp"></TextView>
+
+
+        <LinearLayout
+            android:id="@+id/switches"
+            android:layout_width="match_parent"
+            android:layout_height="466dp"
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingTop="50dp">
+
+            <Switch
+                android:id="@+id/caps"
+                android:layout_width="111dp"
+                android:layout_height="43dp"
+                android:text="ABCD..."
+                android:textSize="18sp"></Switch>
+
+            <Switch
+                android:id="@+id/numbers"
+                android:layout_width="111dp"
+                android:layout_height="43dp"
+                android:text="1234..."
+                android:textSize="18sp"></Switch>
+
+            <Switch
+                android:id="@+id/symbols"
+                android:layout_width="111dp"
+                android:layout_height="43dp"
+                android:text="!@#$..."
+                android:textSize="18sp"></Switch>
+
+            <Button
+                android:id="@+id/list"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="LIST" />
+
+            <LinearLayout
+                android:id="@+id/seekbar"
+                android:layout_width="301dp"
+                android:layout_height="116dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/seekbarvalue"
+                    android:layout_width="55dp"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:text="0"
+                    android:textSize="18sp"></TextView>
+
+                <SeekBar
+                    android:id="@+id/length"
+                    android:layout_width="311dp"
+                    android:layout_height="37dp"
+                    android:max="36"
+                    android:min="6" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/generate"
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:text="GENERATE"></Button>
+
+            <Button
+                android:id="@+id/copy"
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="COPY"></Button>
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="105dp"
+                android:layout_height="61dp"
+                android:text="SAVE"></Button>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
