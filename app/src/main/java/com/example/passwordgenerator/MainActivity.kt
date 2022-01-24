@@ -1,10 +1,9 @@
 package com.example.passwordgenerator
 
 import android.content.Intent
-import androidx.biometric.BiometricPrompt;
+import androidx.biometric.BiometricPrompt
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -16,7 +15,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
-    lateinit var verify: Button
+    //TODO("add password login")
+
+    private lateinit var verify: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             .setNegativeButtonText("Use account password")
             .build()
 
-        verify.setOnClickListener(){
+        verify.setOnClickListener{
             biometricPrompt.authenticate(promptInfo)
         }
     }
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun  onBackPressed() { }
+
 
 
 }

@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import android.widget.SeekBar
+import com.google.firebase.database.FirebaseDatabase
 import java.lang.StringBuilder
 
 class Generator : AppCompatActivity() {
@@ -89,6 +89,23 @@ class Generator : AppCompatActivity() {
 
 
         }
+        save.setOnClickListener(){
+            val  db = FirebaseDatabase.getInstance()
+            val ref = db.getReference("Users")
+            val user = User(username.text.toString(),app.text.toString(),password.text.toString(),"")
+
+            ref.child(user.name.toString()).setValue(user).addOnSuccessListener {
+                Toast.makeText(this, "password saved", Toast.LENGTH_LONG).show()
+            }
+                .addOnFailureListener{
+                    Toast.makeText(this, "failed to save password", Toast.LENGTH_LONG).show()
+                }
+
+            //TODO("implement password encryption")
+
+
+
+        }
         copy.setOnClickListener(){
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText("text", password.text)
@@ -103,7 +120,7 @@ class Generator : AppCompatActivity() {
 
     }
 
-    override fun  onBackPressed() { }
+
 
 }
 
