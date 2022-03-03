@@ -1,16 +1,25 @@
 package com.example.passwordgenerator
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 
+
 class List : AppCompatActivity() {
 
-    lateinit var back: Button
+    private lateinit var back: Button
+
     private  lateinit var dbref: DatabaseReference
     private  lateinit var userRecyclerView: RecyclerView
     private  lateinit var userArrayList: ArrayList<User>
@@ -50,12 +59,7 @@ class List : AppCompatActivity() {
 
         userArrayList = arrayListOf<User>()
         getUserData()
-
-
-
-
-
-        back = findViewById<Button>(R.id.back)
+        back = findViewById(R.id.back)
         back.setOnClickListener() {
             val intent = Intent(this, Generator::class.java)
             startActivity(intent)
