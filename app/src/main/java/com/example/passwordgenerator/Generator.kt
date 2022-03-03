@@ -95,7 +95,7 @@ class Generator : AppCompatActivity() {
             val id = ref.push().key
             val user = User(username.text.toString(),app.text.toString(),password.text.toString(),"",id)
 
-            ref.child(user.name.toString()).setValue(user).addOnSuccessListener {
+            ref.child(user.id.toString()).setValue(user).addOnSuccessListener {
                 Toast.makeText(this, "password saved", Toast.LENGTH_LONG).show()
             }
                 .addOnFailureListener{

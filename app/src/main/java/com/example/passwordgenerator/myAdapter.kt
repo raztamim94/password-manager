@@ -3,6 +3,7 @@ package com.example.passwordgenerator
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
@@ -35,9 +36,9 @@ class MyAdapter (private val userList: ArrayList<User>): RecyclerView.Adapter<My
         holder.password.text = currentitem.password
 
         holder.copy.setOnClickListener(){
-           // val clipboardManager = getSystemService(holder.itemView.context.CLIPBOARD_SERVICE) as ClipboardManager
-           // val clipData = ClipData.newPlainText("text", currentitem.password)
-            //clipboardManager.setPrimaryClip(clipData)
+            val clipboardManager = holder.itemView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("text", currentitem.password)
+            clipboardManager.setPrimaryClip(clipData)
             Toast.makeText(holder.itemView.context, "Text copied to clipboard", Toast.LENGTH_LONG).show()
         }
         holder.edit.setOnClickListener(){
@@ -90,9 +91,9 @@ class MyAdapter (private val userList: ArrayList<User>): RecyclerView.Adapter<My
                     // Delete from firebase
                     val  db = FirebaseDatabase.getInstance()
                     val ref = db.getReference("Users")
-                    ref.child(currentitem.name.toString()).removeValue().addOnCompleteListener(){
+                    ref.child(currentitem.id.toString()).removeValue().addOnCompleteListener(){
                         userList.removeAt(position)
-                        this.notifyItemRemoved(position)
+                        notifyDataSetChanged()
 
                     }
                 }
