@@ -1,5 +1,6 @@
 package com.example.passwordgenerator
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -10,36 +11,62 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
+import kotlin.collections.ArrayList
+
 
 class MyAdapter (private val userList: ArrayList<User>): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 
 
 
-    var isEdit = true
+    private val  db = FirebaseDatabase.getInstance()
+    val ref = db.getReference("Users")
+    private var isEdit = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_layout,parent,false)
         return MyViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentitem = userList[position]
+        val currentUser = userList[position]
 
-        holder.username.text = currentitem.name
-        holder.app.text = currentitem.app
-        holder.password.text = currentitem.password
+        holder.username.text = currentUser.name
+        holder.app.text = currentUser.app
+        holder.password.text = currentUser.password
 
         holder.copy.setOnClickListener(){
             val clipboardManager = holder.itemView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("text", currentitem.password)
+            val clipData = ClipData.newPlainText("text", currentUser.password)
             clipboardManager.setPrimaryClip(clipData)
             Toast.makeText(holder.itemView.context, "Text copied to clipboard", Toast.LENGTH_LONG).show()
+        }
+        holder.notes.setOnClickListener(){
+            val builder = AlertDialog.Builder(holder.itemView.context)
+            val inflater: LayoutInflater = LayoutInflater.from(holder.itemView.context)
+            val dialogLayout: View = inflater.inflate(R.layout.notes_dialogue,null)
+            var editNotes: EditText = dialogLayout.findViewById(R.id.editNotes)
+
+            editNotes.setText(currentUser.notes)
+
+            with(builder){
+                setTitle("Notes")
+                setPositiveButton("OK"){_,_->
+                    currentUser.notes = editNotes.text.toString()
+                    ref.child(currentUser.id.toString()).child("notes").setValue(currentUser.notes)
+                }
+                setView(dialogLayout)
+                show()
+            }
+
+
+
         }
         holder.edit.setOnClickListener(){
             if(isEdit){
@@ -65,15 +92,13 @@ class MyAdapter (private val userList: ArrayList<User>): RecyclerView.Adapter<My
 
                 //update in firebase
                 val user = mapOf(
-                    "app" to currentitem.app.toString(),
-                    "name" to currentitem.name.toString(),
-                    "password" to currentitem.password.toString()
-
-
+                    "app" to holder.app.text.toString(),
+                    "name" to holder.username.text.toString(),
+                    "password" to holder.password.text.toString()
                 )
-                val  db = FirebaseDatabase.getInstance()
-                val ref = db.getReference("Users")
-                ref.child(currentitem.id.toString()).updateChildren(user)
+                ref.child(currentUser.id.toString()).updateChildren(user).addOnSuccessListener(){
+                    notifyItemChanged(position)
+                }
 
 
 
@@ -89,11 +114,11 @@ class MyAdapter (private val userList: ArrayList<User>): RecyclerView.Adapter<My
                 .setCancelable(false)
                 .setPositiveButton("Yes") { _, _ ->
                     // Delete from firebase
-                    val  db = FirebaseDatabase.getInstance()
-                    val ref = db.getReference("Users")
-                    ref.child(currentitem.id.toString()).removeValue().addOnCompleteListener(){
+                    ref.child(currentUser.id.toString()).removeValue().addOnCompleteListener(){
                         userList.removeAt(position)
-                        notifyDataSetChanged()
+                        notifyItemRemoved(position)
+
+
 
                     }
                 }

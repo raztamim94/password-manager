@@ -23,6 +23,7 @@ class List : AppCompatActivity() {
     private  lateinit var dbref: DatabaseReference
     private  lateinit var userRecyclerView: RecyclerView
     private  lateinit var userArrayList: ArrayList<User>
+    private lateinit var adapter: MyAdapter
 
     private fun getUserData(){
         dbref = FirebaseDatabase.getInstance().getReference("Users")
@@ -32,7 +33,12 @@ class List : AppCompatActivity() {
                 if(snapshot.exists()){
                     for(userSnapshot in snapshot.children){
                         val user = userSnapshot.getValue(User::class.java)
-                        userArrayList.add(user!!)
+                        if (user != null) {
+                            if(!userArrayList.contains(user.id)){
+                                userArrayList.add(user!!)
+                            }
+                        }
+
                     }
 
                     userRecyclerView.adapter = MyAdapter(userArrayList)
@@ -52,12 +58,16 @@ class List : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+
+        userArrayList = arrayListOf<User>()
+
         userRecyclerView = findViewById(R.id.userlist)
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.setHasFixedSize(true)
+        adapter = MyAdapter(userArrayList)
+        userRecyclerView.adapter = adapter
 
 
-        userArrayList = arrayListOf<User>()
         getUserData()
         back = findViewById(R.id.back)
         back.setOnClickListener() {
